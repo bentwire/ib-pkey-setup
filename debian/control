@@ -1,0 +1,15 @@
+Source: ib-pkey-setup
+Section: unknown
+Priority: optional
+Maintainer: Michael Panetta <mike.panetta@gmail.com>
+Build-Depends: debhelper-compat (= 12)
+Standards-Version: 4.4.1
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/ib-pkey-setup
+#Vcs-Git: https://salsa.debian.org/debian/ib-pkey-setup.git
+
+Package: ib-pkey-setup
+Architecture: all
+Depends: ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
