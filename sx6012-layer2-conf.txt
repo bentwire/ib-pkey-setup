@@ -1,0 +1,109 @@
+##
+## Running database "vpi"
+## Generated at 2021/06/27 03:24:13 +0000
+## Hostname: Zen
+##
+
+##
+## Port configuration
+##
+   port 1/11 type ethernet force
+   port 1/12 type ethernet force
+   
+##
+## Interface Ethernet configuration
+##
+   interface ethernet 1/11 module-type qsfp-split-4 force
+   interface ethernet 1/12 module-type qsfp-split-4 force
+   interface ethernet 1/12/1 mtu 9000 force
+   interface ethernet 1/12/2 mtu 9000 force
+   interface ethernet 1/12/3 mtu 9000 force
+   interface ethernet 1/12/4 mtu 9000 force
+   interface port-channel 1
+   interface port-channel 1 mtu 9000 force
+   interface ethernet 1/12/1 channel-group 1 mode active
+   interface ethernet 1/12/2 channel-group 1 mode active
+   interface ethernet 1/12/3 channel-group 1 mode active
+   interface ethernet 1/12/4 channel-group 1 mode active
+   interface port-channel 1 switchport mode hybrid
+   interface ethernet 1/12/1 description Orac uplink 1
+   interface ethernet 1/12/2 description Orac uplink 2
+   interface ethernet 1/12/3 description Orac uplink 3
+   interface ethernet 1/12/4 description Orac uplink 4
+   interface port-channel 1 description Orac LAG
+   
+##
+## VLAN configuration
+##
+   vlan 2-3
+   vlan 1000
+   
+   interface port-channel 1 switchport hybrid allowed-vlan add 2
+   interface port-channel 1 switchport hybrid allowed-vlan add 3
+   interface port-channel 1 switchport hybrid allowed-vlan add 1000
+   vlan 2 name "private0"
+   vlan 3 name "private1"
+   vlan 1000 name "ipoib"
+   
+##
+## LAG configuration
+##
+   lacp
+   
+##
+## Network interface configuration
+##
+   interface ib 1/1 mtu 4K
+   interface ib 1/1 op-vls 8
+   interface ib 1/1 speed sdr ddr qdr fdr10
+   interface ib 1/1 width 5
+   interface ib 1/2 mtu 4K
+   interface ib 1/2 op-vls 8
+   interface ib 1/2 speed sdr ddr qdr fdr10
+   interface ib 1/2 width 5
+   interface ib0 ip address 192.168.10.1 /24
+   interface mgmt0 ip address 0.0.0.0 /0
+   interface mgmt0 shutdown
+   
+##
+## Network interface IPv6 configuration
+##
+   interface mgmt0 ipv6 address autoconfig
+   interface mgmt0 ipv6 address autoconfig privacy
+   
+##
+## Proxy Arp configuration
+##
+   interface proxy-arp 1
+   interface proxy-arp 2
+   interface proxy-arp 2 counters
+   interface proxy-arp 2 ha member Zen
+   interface proxy-arp 2 ha member Zen description private0
+   interface proxy-arp 2 ha member Zen ip address 192.168.20.3
+   interface proxy-arp 2 ip netmask /24
+   interface proxy-arp 2 ip pkey 0x0002
+   interface proxy-arp 2 ip vlan 2
+no interface proxy-arp 2 shutdown
+   interface proxy-arp 3
+   interface proxy-arp 3 ha member Zen
+   interface proxy-arp 3 ha member Zen description private1
+   interface proxy-arp 3 ha member Zen ip address 192.168.22.3
+   interface proxy-arp 3 ip netmask /24
+   interface proxy-arp 3 ip pkey 0x0003
+   interface proxy-arp 3 ip vlan 3
+no interface proxy-arp 3 shutdown
+   interface proxy-arp 4
+   interface proxy-arp 4 ha member Zen
+   interface proxy-arp 4 ha member Zen description ipoib
+   interface proxy-arp 4 ha member Zen ip address 192.168.10.3
+   interface proxy-arp 4 ip netmask /24
+   interface proxy-arp 4 ip pkey 0x1000
+   interface proxy-arp 4 ip vlan 1000
+no interface proxy-arp 4 shutdown
+   ip proxy-arp
+   
+##
+## Other IP configuration
+##
+   hostname Zen
+   ip dhcp send-hostname
